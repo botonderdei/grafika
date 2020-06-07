@@ -551,5 +551,33 @@ void init_entities(World* world){
 	load_model("objects/geoid.obj", &world->mars.model);
 	world->mars.texture = load_texture("textures/mars.png");
 	scale_model (&world->mars.model, 0.2, 0.2, 0.2);
+	
+	load_model("objects/geoid.obj", &world->mercury.model);
+	world->mercury.texture = load_texture("textures/mercury.png");
+	scale_model (&world->mercury.model, 0.1, 0.1, 0.1);
+	
+	load_model("objects/geoid.obj", &world->venus.model);
+	world->venus.texture = load_texture("textures/venus.png");
+	scale_model (&world->venus.model, 0.15, 0.15, 0.15);
+	
+	load_model("objects/geoid.obj", &world->jupiter.model);
+	world->jupiter.texture = load_texture("textures/jupiter.png");
+	scale_model (&world->jupiter.model, 0.35, 0.35, 0.35);
+	
+	load_model("objects/geoid.obj", &world->saturn.model);
+	world->saturn.texture = load_texture("textures/saturn.png");
+	scale_model (&world->saturn.model, 0.2, 0.2, 0.2);
+	
+	load_model("objects/geoid.obj", &world->uranus.model);
+	world->uranus.texture = load_texture("textures/uranus.png");
+	scale_model (&world->uranus.model, 0.2, 0.2, 0.2);
+	
+	load_model("objects/geoid.obj", &world->neptune.model);
+	world->neptune.texture = load_texture("textures/neptune.png");
+	scale_model (&world->neptune.model, 0.2, 0.2, 0.2);
+
+
+
+
 
 }

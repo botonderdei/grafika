@@ -32,6 +32,13 @@ struct Action
 	int move_earth_in_galaxy;
 	int rotate_mars_in_galaxy;
 	int move_mars_in_galaxy;
+	int rotate_mercury_in_galaxy;
+	int move_mercury_in_galaxy;
+	int move_venus_in_galaxy;
+	int move_jupiter_in_galaxy;
+	int move_saturn_in_galaxy;
+	int move_uranus_in_galaxy;
+	int move_neptune_in_galaxy;
 	int increase_light;
 	int decrease_light;
 };
@@ -48,7 +55,7 @@ float speed = 30;
 float angle = 135;
 double degree = 0;
 double distance_a = 4000;
-double distance_b = 2000;
+double distance_b = 4000;
 
 
 double calc_elapsed_time()
@@ -196,8 +203,8 @@ void movement_of_objects (Move* move){
 if (action.move_earth_in_galaxy == TRUE){
 		degree+=0.1;
 		double angle = degree_to_radian(degree);
-		move->earth.x = cos(angle) * distance_a;
-		move->earth.y = sin(angle) * distance_b;
+		move->earth.x = cos(angle) * distance_a/1.8;
+		move->earth.y = sin(angle) * distance_b/1.8;
 		move->earth.z = 0;
 		}
 	else
@@ -209,9 +216,9 @@ if (action.move_earth_in_galaxy == TRUE){
 
 if (action.move_mars_in_galaxy == TRUE){
 		degree+=0.1;
-		double angle = degree_to_radian(degree)-10;
-		move->mars.x = (cos(angle)* distance_a)-80;
-		move->mars.y = (sin(angle)* distance_b);
+		double angle = degree_to_radian(degree)-100;
+		move->mars.x = (cos(angle)* distance_a)/1.3;
+		move->mars.y = (sin(angle)* distance_b)/1.3;
 		move->mars.z = 0;
 		}
 	else
@@ -220,7 +227,95 @@ if (action.move_mars_in_galaxy == TRUE){
 		move->mars.y = 0;
 		move->mars.z = 0;
 		}
+		
+if (action.move_mercury_in_galaxy == TRUE){
+		degree+=0.1;
+		double angle = degree_to_radian(degree)-200;
+		move->mercury.x = (cos(angle)* distance_a)/2.8;
+		move->mercury.y = (sin(angle)* distance_b)/2.8;
+		move->mercury.z = 0;
+		}
+	else
+		if (move->mercury.x == 0){
+		move->mercury.x = 100;
+		move->mercury.y = 0;
+		move->mercury.z = 0;
+		}
+		
+if (action.move_venus_in_galaxy == TRUE){
+		degree+=0.1;
+		double angle = degree_to_radian(degree)-400;
+		move->venus.x = (cos(angle)* distance_a)/2.3;
+		move->venus.y = (sin(angle)* distance_b)/2.3;
+		move->venus.z = 0;
+		}
+	else
+		if (move->venus.x == 0){
+		move->venus.x = 100;
+		move->venus.y = 0;
+		move->venus.z = 0;
+		}
+
+
+if (action.move_jupiter_in_galaxy == TRUE){
+		degree+=0.1;
+		double angle = degree_to_radian(degree)+100;
+		move->jupiter.x = (cos(angle)* distance_a)*1.2;
+		move->jupiter.y = (sin(angle)* distance_b)*1.2;
+		move->jupiter.z = 0;
+		}
+	else
+		if (move->jupiter.x == 0){
+		move->jupiter.x = 100;
+		move->jupiter.y = 0;
+		move->jupiter.z = 0;
+		}
+		
+if (action.move_saturn_in_galaxy == TRUE){
+		degree+=0.1;
+		double angle = degree_to_radian(degree)+300;
+		move->saturn.x = (cos(angle)* distance_a)*1.6;
+		move->saturn.y = (sin(angle)* distance_b)*1.6;
+		move->saturn.z = 0;
+		}
+	else
+		if (move->saturn.x == 0){
+		move->saturn.x = 100;
+		move->saturn.y = 0;
+		move->saturn.z = 0;
+		}
+		
+if (action.move_uranus_in_galaxy == TRUE){
+		degree+=0.1;
+		double angle = degree_to_radian(degree)+550;
+		move->uranus.x = (cos(angle)* distance_a)*2;
+		move->uranus.y = (sin(angle)* distance_b)*2;
+		move->uranus.z = 0;
+		}
+	else
+		if (move->uranus.x == 0){
+		move->uranus.x = 100;
+		move->uranus.y = 0;
+		move->uranus.z = 0;
+		}
+		
+if (action.move_neptune_in_galaxy == TRUE){
+		degree+=0.1;
+		double angle = degree_to_radian(degree)+700;
+		move->neptune.x = (cos(angle)* distance_a)*2.3;
+		move->neptune.y = (sin(angle)* distance_b)*2.3;
+		move->neptune.z = 0;
+		}
+	else
+		if (move->neptune.x == 0){
+		move->neptune.x = 100;
+		move->neptune.y = 0;
+		move->neptune.z = 0;
+		}
+
+
 }
+
 
 void display() {
 	if (!help_on) {
@@ -398,6 +493,12 @@ int main(int argc, char** argv) {
     action.rotate_earth_in_galaxy = TRUE;
 	action.move_earth_in_galaxy = TRUE;
 	action.move_mars_in_galaxy = TRUE;
+	action.move_mercury_in_galaxy = TRUE;
+	action.move_venus_in_galaxy = TRUE;
+	action.move_jupiter_in_galaxy = TRUE;
+	action.move_saturn_in_galaxy = TRUE;
+	action.move_uranus_in_galaxy = TRUE;
+	action.move_neptune_in_galaxy = TRUE;
 
 	glutMainLoop();
 	return 0;

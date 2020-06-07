@@ -266,6 +266,87 @@ void draw_environment(World world, Rotate* rotate, Move move ){
     		draw_model(&world.moon.model);
 
    glPopMatrix();
+   
+   //Draw the mercury.
+   glPushMatrix();
+			
+    		glTranslatef (move.mercury.x,move.mercury.y,move.mercury.z);
+    		glMaterialfv(GL_FRONT, GL_AMBIENT, world.mercury.material_ambient);
+    		glBindTexture(GL_TEXTURE_2D, world.mercury.texture);
+    		glScalef(1.0f, 1.0f, 1.0f);
+    		glRotatef(rotate->mercury_rotation, 0, 0, 1);
+    		draw_model(&world.mercury.model);
+
+   glPopMatrix();
+   
+   //Draw the venus.
+   glPushMatrix();
+			
+    		glTranslatef (move.venus.x,move.venus.y,move.venus.z);
+    		glMaterialfv(GL_FRONT, GL_AMBIENT, world.venus.material_ambient);
+    		glBindTexture(GL_TEXTURE_2D, world.venus.texture);
+    		glScalef(1.0f, 1.0f, 1.0f);
+    		glRotatef(rotate->venus_rotation, 0, 0, 1);
+    		draw_model(&world.venus.model);
+
+   glPopMatrix();
+   
+   //Draw the jupiter.
+   glPushMatrix();
+			
+    		glTranslatef (move.jupiter.x,move.jupiter.y,move.jupiter.z);
+    		glMaterialfv(GL_FRONT, GL_AMBIENT, world.jupiter.material_ambient);
+    		glBindTexture(GL_TEXTURE_2D, world.jupiter.texture);
+    		glScalef(1.0f, 1.0f, 1.0f);
+    		glRotatef(rotate->jupiter_rotation, 0, 0, 1);
+    		draw_model(&world.jupiter.model);
+
+   glPopMatrix();
+   
+      //Draw the saturn.
+   glPushMatrix();
+			
+    		glTranslatef (move.saturn.x,move.saturn.y,move.saturn.z);
+    		glMaterialfv(GL_FRONT, GL_AMBIENT, world.saturn.material_ambient);
+    		glBindTexture(GL_TEXTURE_2D, world.saturn.texture);
+    		glScalef(1.0f, 1.0f, 1.0f);
+    		glRotatef(rotate->saturn_rotation, 0, 0, 1);
+    		draw_model(&world.saturn.model);
+
+
+   glPopMatrix();
+   
+      //Draw the uranus.
+   glPushMatrix();
+			
+    		glTranslatef (move.uranus.x,move.uranus.y,move.uranus.z);
+    		glMaterialfv(GL_FRONT, GL_AMBIENT, world.uranus.material_ambient);
+    		glBindTexture(GL_TEXTURE_2D, world.uranus.texture);
+    		glScalef(1.0f, 1.0f, 1.0f);
+    		glRotatef(rotate->uranus_rotation, 0, 0, 1);
+    		draw_model(&world.uranus.model);
+
+
+
+   glPopMatrix();
+   
+   
+      //Draw the neptune.
+   glPushMatrix();
+			
+    		glTranslatef (move.neptune.x,move.neptune.y,move.neptune.z);
+    		glMaterialfv(GL_FRONT, GL_AMBIENT, world.neptune.material_ambient);
+    		glBindTexture(GL_TEXTURE_2D, world.neptune.texture);
+    		glScalef(1.0f, 1.0f, 1.0f);
+    		glRotatef(rotate->neptune_rotation, 0, 0, 1);
+    		draw_model(&world.neptune.model);
+
+
+
+
+   glPopMatrix();
+   
+
 }
 
 void draw_ship(World world, double* pos, double* rotate){

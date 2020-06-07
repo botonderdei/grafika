@@ -16,6 +16,13 @@ typedef struct {
 	double sun_rotation;
 	double moon_rotation;
 	double mars_rotation;
+	double mercury_rotation;
+	double venus_rotation;
+	double jupiter_rotation;
+	double saturn_rotation;
+	double uranus_rotation;
+	double neptune_rotation;
+	
 }Rotate;
 
 typedef struct{
@@ -23,6 +30,14 @@ typedef struct{
 	Position sun;
 	Position moon;
 	Position mars;
+	Position mercury;
+	Position venus;
+	Position jupiter;
+	Position saturn;
+	Position uranus;
+	Position neptune;
+	
+	
 }Move;
 
 

@@ -77,6 +77,12 @@ typedef struct {
     Entity ship;
     Entity moon;
 	Entity mars;
+	Entity mercury;
+	Entity venus;
+	Entity jupiter;
+	Entity saturn;
+	Entity uranus;
+	Entity neptune;
 
 }World;
 
