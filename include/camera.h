@@ -1,10 +1,14 @@
 #ifndef CAMERA_H
 #define CAMERA_H
+#include <GL/glut.h>
 #include "model.h"
 #include "draw.h"
+#include "load.h"
+
 
 #define MOVE_SPEED 10.0  //BIGGER IS FASTER
 #define CAMERA_SPEED 5.0 //BIGGER IS SLOWER
+
 
 struct Camera
 {
@@ -13,6 +17,28 @@ struct Camera
 	struct Vertex prev_position;
 };
 
+struct Action
+{
+	int move_forward;
+	int move_backward;
+	int rotate_left;
+	int rotate_right;
+	int move_up;
+	int move_down;
+	int rotate_earth_in_galaxy;
+	int move_earth_in_galaxy;
+	int rotate_mars_in_galaxy;
+	int move_mars_in_galaxy;
+	int rotate_mercury_in_galaxy;
+	int move_mercury_in_galaxy;
+	int move_venus_in_galaxy;
+	int move_jupiter_in_galaxy;
+	int move_saturn_in_galaxy;
+	int move_uranus_in_galaxy;
+	int move_neptune_in_galaxy;
+	int increase_light;
+	int decrease_light;
+};
 
 //Converts degree to radian.
 double degree_to_radian(double degree);
@@ -54,6 +80,7 @@ void rotate_camera_up(struct Camera* camera);
 
 //rotate the camera down.
 void rotate_camera_down(struct Camera* camera);
+
 
 
 #endif
