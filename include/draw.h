@@ -1,6 +1,8 @@
-#ifndef DRAW_H
-#define DRAW_H
+#ifndef OBJ_DRAW_H
+#define OBJ_DRAW_H
+
 #include "model.h"
+
 #define SKYBOX_SIZE 10000.0
 
 typedef struct Position
@@ -40,24 +42,16 @@ typedef struct{
 	
 }Move;
 
+/**
+ * Draw the model.
+ */
+void draw_model(const Model* model);
 
-//Draw the model.
-void draw_model(const struct Model* model);
+/**
+ * Draw the triangles of the model.
+ */
+void draw_triangles(const Model* model);
 
-
-//Draw the triangles of the model.
-void draw_triangles(const struct Model* model);
-
-
-//Draw the quads of the model.
-void draw_quads(const struct Model* model);
-
-
-//Draw the normal vectors of the model.
-void draw_normals(const struct Model* model, double length);
-
-
-//Draw the top skybox.
 void draw_skybox_top(Entity skybox);
 
 
@@ -71,4 +65,6 @@ void draw_environment(World world,Rotate* rotate, Move move);
 //Draw the ship
 void draw_ship(World world, double* pos, double* rotate);
 
-#endif
+
+
+#endif /* OBJ_DRAW_H */

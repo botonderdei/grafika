@@ -138,3 +138,4 @@ void rotate_camera_left(struct Camera* camera)
 {
 	rotate_camera(camera, 5, 0);
 }
+

@@ -6,42 +6,23 @@
 #include "model.h"
 #include "draw.h"
 #include "camera.h"
+#include "load.h"
+#include "transform.h"
+#include "world.h"
 #include <sys/time.h>
 
 #define resolution 1   // 1: 1920*1080   0: 1366*768
 #define fullscreen 1   // 1: fullscreen  0: windowed
-
 
 GLfloat light_position[] = {1, 1, 0, 1};
 GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 0 };
 GLfloat light_diffuse[] = { 0.5, 0.5, 0, 0 };
 GLfloat light_specular[] = { 1, 1, 1, 0 };
 
+
 typedef GLubyte Pixel;
 struct Camera camera;
 struct Action action;
-struct Action
-{
-	int move_forward;
-	int move_backward;
-	int rotate_left;
-	int rotate_right;
-	int move_up;
-	int move_down;
-	int rotate_earth_in_galaxy;
-	int move_earth_in_galaxy;
-	int rotate_mars_in_galaxy;
-	int move_mars_in_galaxy;
-	int rotate_mercury_in_galaxy;
-	int move_mercury_in_galaxy;
-	int move_venus_in_galaxy;
-	int move_jupiter_in_galaxy;
-	int move_saturn_in_galaxy;
-	int move_uranus_in_galaxy;
-	int move_neptune_in_galaxy;
-	int increase_light;
-	int decrease_light;
-};
 
 World world;
 Rotate rotate;
@@ -49,25 +30,34 @@ Move move;
 
 int WINDOW_WIDTH;
 int WINDOW_HEIGHT;
-int previous_time;
 int help, help_on = 0;
-float speed = 30;
 float angle = 135;
 double degree = 0;
 double distance_a = 4000;
 double distance_b = 4000;
+float speed = 30;
+int previous_time;
 
 
-double calc_elapsed_time()
-{
-	int current_time;
-	double elapsed_time;
 
-	current_time = glutGet(GLUT_ELAPSED_TIME);
-	elapsed_time = (double)(current_time - previous_time) / 1000.0;
-	previous_time=current_time;
 
-	return elapsed_time;
+
+void specialFunc(int key, int x, int y) {
+	switch (key) {
+	case GLUT_KEY_F1:
+		if (help_on) {
+			help_on = 0;
+
+			glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, light_ambient);
+			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, light_ambient);
+		}else {
+			help_on = 1;
+			GLfloat ones[] = { 1, 1, 1, 1 };
+			glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ones);
+			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ones);
+		}
+	}
+
 }
 
 void update_camera_position(struct Camera* camera, double elapsed_time)
@@ -113,27 +103,6 @@ void update_camera_position(struct Camera* camera, double elapsed_time)
 
 }
 
-
-
-void specialFunc(int key, int x, int y) {
-	switch (key) {
-	case GLUT_KEY_F1:
-		if (help_on) {
-			help_on = 0;
-
-			glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, light_ambient);
-			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, light_ambient);
-		}else {
-			help_on = 1;
-			GLfloat ones[] = { 1, 1, 1, 1 };
-			glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ones);
-			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ones);
-		}
-	}
-
-}
-
-
 void reshape(GLsizei width, GLsizei height) {
 	WINDOW_WIDTH = width;
 	WINDOW_HEIGHT = height;
@@ -146,6 +115,19 @@ void reshape(GLsizei width, GLsizei height) {
 	else
 		gluOrtho2D(0, width, height, 0);
 }
+
+double calc_elapsed_time()
+{
+	int current_time;
+	double elapsed_time;
+
+	current_time = glutGet(GLUT_ELAPSED_TIME);
+	elapsed_time = (double)(current_time - previous_time) / 1000.0;
+	previous_time=current_time;
+
+	return elapsed_time;
+}
+
 
 
 void draw_help() {
@@ -312,8 +294,6 @@ if (action.move_neptune_in_galaxy == TRUE){
 		move->neptune.y = 0;
 		move->neptune.z = 0;
 		}
-
-
 }
 
 
@@ -415,32 +395,6 @@ void key_up_handler(unsigned char key, int x, int y)
 void idle()
 {
 	glutPostRedisplay();
-}
-
-
-GLuint load_texture(const char* filename) {
-	glPixelStorei(GL_UNPACK_ALIGNMENT,1);
-	GLuint texture_name;
-	Pixel* image;
-	glGenTextures(1, &texture_name);
-
-	int width;
-	int height;
-
-	image = (Pixel*)SOIL_load_image(filename, &width, &height, 0, SOIL_LOAD_RGBA);
-
-	glBindTexture(GL_TEXTURE_2D, texture_name);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, (Pixel*)image);
-
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	glEnable(GL_TEXTURE_2D);
-	SOIL_free_image_data(image);
-	return texture_name;
 }
 
 

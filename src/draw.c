@@ -5,104 +5,43 @@
 #include "camera.h"
 float r=0;
 
-void draw_triangles(const struct Model* model)
+void draw_model(const Model* model)
 {
-	int i, k;
-	int vertex_index, normal_index;
-	double x, y, z, normal_x, normal_y, normal_z;
-
-	glBegin(GL_TRIANGLES);
-
-	for (i = 0; i < model->n_triangles; ++i) {
-		for (k = 0; k < 3; ++k) {
-			normal_index = model->triangles[i].points[k].normal_index;
-			normal_x = model->normals[normal_index].x;
-			normal_y = model->normals[normal_index].y;
-			normal_z = model->normals[normal_index].z;
-			glNormal3d(normal_x, normal_y, normal_z);
-			vertex_index = model->triangles[i].points[k].vertex_index;
-			x = model->vertices[vertex_index].x;
-			y = model->vertices[vertex_index].y;
-			z = model->vertices[vertex_index].z;
-            switch(k){
-            case 0:
-                glTexCoord2f(0, 0);
-                break;
-            case 1:
-                glTexCoord2f(0.1*z, 0);
-                break;
-            case 2:
-                glTexCoord2f(0, 0.01);
-                break;
-            }
-			glVertex3d(x, y, z);
-
-		}
-	}
-
-	glEnd();
+    draw_triangles(model);
 }
 
-
-void draw_quads(const struct Model* model)
+void draw_triangles(const Model* model)
 {
     int i, k;
-    int vertex_index, texture_index;
-    double x, y, z, u, v;
+    int vertex_index, texture_index, normal_index;
+    float x, y, z, u, v;
 
-	glBegin(GL_QUADS);
+    glBegin(GL_TRIANGLES);
 
-    for (i = 0; i < model->n_quads; ++i) {
-        for (k = 0; k < 4; ++k) {
+    for (i = 0; i < model->n_triangles; ++i) {
+        for (k = 0; k < 3; ++k) {
 
-            texture_index = model->quads[i].points[k].texture_index;
+            normal_index = model->triangles[i].points[k].normal_index;
+            x = model->normals[normal_index].x;
+            y = model->normals[normal_index].y;
+            z = model->normals[normal_index].z;
+            glNormal3f(x, y, z);
+
+            texture_index = model->triangles[i].points[k].texture_index;
             u = model->texture_vertices[texture_index].u;
             v = model->texture_vertices[texture_index].v;
-            glTexCoord2f(u, 1-v);
+            glTexCoord2f(u, v);
 
-            vertex_index = model->quads[i].points[k].vertex_index;
+            vertex_index = model->triangles[i].points[k].vertex_index;
             x = model->vertices[vertex_index].x;
             y = model->vertices[vertex_index].y;
             z = model->vertices[vertex_index].z;
-            glVertex3d(x, y, z);
+            glVertex3f(x, y, z);
         }
     }
 
     glEnd();
 }
-
-
-
-void draw_normals(const struct Model* model, double length)
-{
-	int i;
-	double x1, y1, z1, x2, y2, z2;
-
-	glColor3f(0, 0, 1);
-
-	glBegin(GL_LINES);
-
-	for (i = 0; i < model->n_vertices; ++i) {
-		x1 = model->vertices[i].x;
-		y1 = model->vertices[i].y;
-		z1 = model->vertices[i].z;
-		x2 = x1 + model->normals[i].x * length;
-		y2 = y1 + model->normals[i].y * length;
-		z2 = z1 + model->normals[i].z * length;
-		glVertex3d(x1, y1, z1);
-		glVertex3d(x2, y2, z2);
-	}
-	glEnd();
-}
-
-
-
-void draw_model(const struct Model* model)
-{
-	draw_triangles(model);
-	draw_quads(model);
-}
-
 
 void draw_skybox_bottom(Entity skybox)
 {
@@ -202,8 +141,6 @@ void draw_skybox_top(Entity skybox)
     glPopMatrix();
 }
 
-
-
 void draw_environment(World world, Rotate* rotate, Move move ){
 	glEnable(GL_TEXTURE_2D);
 
@@ -219,7 +156,7 @@ void draw_environment(World world, Rotate* rotate, Move move ){
 	glPushMatrix();
 
 		glTranslatef(0,0,0);
-		glMaterialfv(GL_FRONT, GL_AMBIENT, world.sun.material_ambient);
+		set_material(&(world.sun.material));
 		glBindTexture(GL_TEXTURE_2D, world.sun.texture);
 		glScalef(1.0f, 1.0f, 1.0f);
 		glRotatef(rotate->sun_rotation, 1, 1, 1);
@@ -232,7 +169,7 @@ void draw_environment(World world, Rotate* rotate, Move move ){
     glPushMatrix();
 
     		glTranslatef (move.earth.x,move.earth.y,move.earth.z);
-    		glMaterialfv(GL_FRONT, GL_AMBIENT, world.earth.material_ambient);
+    		set_material(&(world.earth.material));
     		glBindTexture(GL_TEXTURE_2D, world.earth.texture);
     		glScalef(1.0f, 1.0f, 1.0f);
     		glRotatef(rotate->earth_rotation, 0, 0, 1);
@@ -245,7 +182,7 @@ void draw_environment(World world, Rotate* rotate, Move move ){
    glPushMatrix();
 			
     		glTranslatef (move.mars.x,move.mars.y,move.mars.z);
-    		glMaterialfv(GL_FRONT, GL_AMBIENT, world.mars.material_ambient);
+    		set_material(&(world.mars.material));
     		glBindTexture(GL_TEXTURE_2D, world.mars.texture);
     		glScalef(1.0f, 1.0f, 1.0f);
     		glRotatef(rotate->mars_rotation, 0, 0, 1);
@@ -259,7 +196,7 @@ void draw_environment(World world, Rotate* rotate, Move move ){
 			
 			r=r+1;
     		glTranslatef (move.earth.x+cos(r*(3.14)/180) * 500,move.earth.y+sin(r*(3.14)/180) * 500,move.earth.z);
-    		glMaterialfv(GL_FRONT, GL_AMBIENT, world.moon.material_ambient);
+    		set_material(&(world.moon.material));
     		glBindTexture(GL_TEXTURE_2D, world.moon.texture);
     		glScalef(1.0f, 1.0f, 1.0f);
     		glRotatef(rotate->moon_rotation, 0, 0, 1);
@@ -271,7 +208,7 @@ void draw_environment(World world, Rotate* rotate, Move move ){
    glPushMatrix();
 			
     		glTranslatef (move.mercury.x,move.mercury.y,move.mercury.z);
-    		glMaterialfv(GL_FRONT, GL_AMBIENT, world.mercury.material_ambient);
+    		set_material(&(world.mercury.material));
     		glBindTexture(GL_TEXTURE_2D, world.mercury.texture);
     		glScalef(1.0f, 1.0f, 1.0f);
     		glRotatef(rotate->mercury_rotation, 0, 0, 1);
@@ -283,7 +220,7 @@ void draw_environment(World world, Rotate* rotate, Move move ){
    glPushMatrix();
 			
     		glTranslatef (move.venus.x,move.venus.y,move.venus.z);
-    		glMaterialfv(GL_FRONT, GL_AMBIENT, world.venus.material_ambient);
+    		set_material(&(world.venus.material));
     		glBindTexture(GL_TEXTURE_2D, world.venus.texture);
     		glScalef(1.0f, 1.0f, 1.0f);
     		glRotatef(rotate->venus_rotation, 0, 0, 1);
@@ -295,7 +232,7 @@ void draw_environment(World world, Rotate* rotate, Move move ){
    glPushMatrix();
 			
     		glTranslatef (move.jupiter.x,move.jupiter.y,move.jupiter.z);
-    		glMaterialfv(GL_FRONT, GL_AMBIENT, world.jupiter.material_ambient);
+    		set_material(&(world.jupiter.material));
     		glBindTexture(GL_TEXTURE_2D, world.jupiter.texture);
     		glScalef(1.0f, 1.0f, 1.0f);
     		glRotatef(rotate->jupiter_rotation, 0, 0, 1);
@@ -307,7 +244,7 @@ void draw_environment(World world, Rotate* rotate, Move move ){
    glPushMatrix();
 			
     		glTranslatef (move.saturn.x,move.saturn.y,move.saturn.z);
-    		glMaterialfv(GL_FRONT, GL_AMBIENT, world.saturn.material_ambient);
+    		set_material(&(world.saturn.material));
     		glBindTexture(GL_TEXTURE_2D, world.saturn.texture);
     		glScalef(1.0f, 1.0f, 1.0f);
     		glRotatef(rotate->saturn_rotation, 0, 0, 1);
@@ -320,7 +257,7 @@ void draw_environment(World world, Rotate* rotate, Move move ){
    glPushMatrix();
 			
     		glTranslatef (move.uranus.x,move.uranus.y,move.uranus.z);
-    		glMaterialfv(GL_FRONT, GL_AMBIENT, world.uranus.material_ambient);
+    		set_material(&(world.uranus.material));
     		glBindTexture(GL_TEXTURE_2D, world.uranus.texture);
     		glScalef(1.0f, 1.0f, 1.0f);
     		glRotatef(rotate->uranus_rotation, 0, 0, 1);
@@ -335,7 +272,7 @@ void draw_environment(World world, Rotate* rotate, Move move ){
    glPushMatrix();
 			
     		glTranslatef (move.neptune.x,move.neptune.y,move.neptune.z);
-    		glMaterialfv(GL_FRONT, GL_AMBIENT, world.neptune.material_ambient);
+    		set_material(&(world.neptune.material));
     		glBindTexture(GL_TEXTURE_2D, world.neptune.texture);
     		glScalef(1.0f, 1.0f, 1.0f);
     		glRotatef(rotate->neptune_rotation, 0, 0, 1);
@@ -354,7 +291,7 @@ void draw_ship(World world, double* pos, double* rotate){
 	glPushMatrix();
 
         GLfloat a[4] = {0.5 , 0.5, 0.5, 1.0};
-		glMaterialfv(GL_FRONT, GL_AMBIENT, a);
+		set_material(&(world.ship.material));
 		glBindTexture(GL_TEXTURE_2D, world.ship.texture);
 	    glTranslated(pos[0], pos[1], pos[2]);
 		glScalef(10.0f, 10.0f, 10.0f);
@@ -362,4 +299,3 @@ void draw_ship(World world, double* pos, double* rotate){
 		draw_model(&world.ship.model);
     glPopMatrix();
 }
-
