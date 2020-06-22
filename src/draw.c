@@ -2,7 +2,9 @@
 #include <GL/glut.h>
 #include <stdio.h>
 #include <math.h>
+#include "world.h"
 #include "camera.h"
+#include "transform.h"
 float r=0;
 
 void draw_model(const Model* model)
@@ -171,9 +173,10 @@ void draw_environment(World world, Rotate* rotate, Move move ){
     		glTranslatef (move.earth.x,move.earth.y,move.earth.z);
     		set_material(&(world.earth.material));
     		glBindTexture(GL_TEXTURE_2D, world.earth.texture);
-    		glScalef(1.0f, 1.0f, 1.0f);
+    		glScalef(0.2f, 0.2f, 0.2f);
     		glRotatef(rotate->earth_rotation, 0, 0, 1);
-    		draw_model(&world.earth.model);
+    		draw_model(&world.sun.model);
+
 
    glPopMatrix();
    
@@ -184,9 +187,9 @@ void draw_environment(World world, Rotate* rotate, Move move ){
     		glTranslatef (move.mars.x,move.mars.y,move.mars.z);
     		set_material(&(world.mars.material));
     		glBindTexture(GL_TEXTURE_2D, world.mars.texture);
-    		glScalef(1.0f, 1.0f, 1.0f);
+    		glScalef(0.2f, 0.2f, 0.2f);
     		glRotatef(rotate->mars_rotation, 0, 0, 1);
-    		draw_model(&world.mars.model);
+    		draw_model(&world.sun.model);
 
    glPopMatrix();
 
@@ -198,9 +201,9 @@ void draw_environment(World world, Rotate* rotate, Move move ){
     		glTranslatef (move.earth.x+cos(r*(3.14)/180) * 500,move.earth.y+sin(r*(3.14)/180) * 500,move.earth.z);
     		set_material(&(world.moon.material));
     		glBindTexture(GL_TEXTURE_2D, world.moon.texture);
-    		glScalef(1.0f, 1.0f, 1.0f);
+    		glScalef(0.1f, 0.1f, 0.1f);
     		glRotatef(rotate->moon_rotation, 0, 0, 1);
-    		draw_model(&world.moon.model);
+    		draw_model(&world.sun.model);
 
    glPopMatrix();
    
@@ -210,9 +213,9 @@ void draw_environment(World world, Rotate* rotate, Move move ){
     		glTranslatef (move.mercury.x,move.mercury.y,move.mercury.z);
     		set_material(&(world.mercury.material));
     		glBindTexture(GL_TEXTURE_2D, world.mercury.texture);
-    		glScalef(1.0f, 1.0f, 1.0f);
+    		glScalef(0.1f, 0.1f, 0.1f);
     		glRotatef(rotate->mercury_rotation, 0, 0, 1);
-    		draw_model(&world.mercury.model);
+    		draw_model(&world.sun.model);
 
    glPopMatrix();
    
@@ -222,9 +225,9 @@ void draw_environment(World world, Rotate* rotate, Move move ){
     		glTranslatef (move.venus.x,move.venus.y,move.venus.z);
     		set_material(&(world.venus.material));
     		glBindTexture(GL_TEXTURE_2D, world.venus.texture);
-    		glScalef(1.0f, 1.0f, 1.0f);
+    		glScalef(0.15f, 0.15f, 0.15f);
     		glRotatef(rotate->venus_rotation, 0, 0, 1);
-    		draw_model(&world.venus.model);
+    		draw_model(&world.sun.model);
 
    glPopMatrix();
    
@@ -234,9 +237,9 @@ void draw_environment(World world, Rotate* rotate, Move move ){
     		glTranslatef (move.jupiter.x,move.jupiter.y,move.jupiter.z);
     		set_material(&(world.jupiter.material));
     		glBindTexture(GL_TEXTURE_2D, world.jupiter.texture);
-    		glScalef(1.0f, 1.0f, 1.0f);
+    		glScalef(0.35f, 0.35f, 0.35f);
     		glRotatef(rotate->jupiter_rotation, 0, 0, 1);
-    		draw_model(&world.jupiter.model);
+    		draw_model(&world.sun.model);
 
    glPopMatrix();
    
@@ -246,9 +249,9 @@ void draw_environment(World world, Rotate* rotate, Move move ){
     		glTranslatef (move.saturn.x,move.saturn.y,move.saturn.z);
     		set_material(&(world.saturn.material));
     		glBindTexture(GL_TEXTURE_2D, world.saturn.texture);
-    		glScalef(1.0f, 1.0f, 1.0f);
+    		glScalef(0.2f, 0.2f, 0.2f);
     		glRotatef(rotate->saturn_rotation, 0, 0, 1);
-    		draw_model(&world.saturn.model);
+    		draw_model(&world.sun.model);
 
 
    glPopMatrix();
@@ -259,9 +262,9 @@ void draw_environment(World world, Rotate* rotate, Move move ){
     		glTranslatef (move.uranus.x,move.uranus.y,move.uranus.z);
     		set_material(&(world.uranus.material));
     		glBindTexture(GL_TEXTURE_2D, world.uranus.texture);
-    		glScalef(1.0f, 1.0f, 1.0f);
+    		glScalef(0.2f, 0.2f, 0.2f);
     		glRotatef(rotate->uranus_rotation, 0, 0, 1);
-    		draw_model(&world.uranus.model);
+    		draw_model(&world.sun.model);
 
 
 
@@ -274,9 +277,9 @@ void draw_environment(World world, Rotate* rotate, Move move ){
     		glTranslatef (move.neptune.x,move.neptune.y,move.neptune.z);
     		set_material(&(world.neptune.material));
     		glBindTexture(GL_TEXTURE_2D, world.neptune.texture);
-    		glScalef(1.0f, 1.0f, 1.0f);
+    		glScalef(0.2f, 0.2f, 0.2f);
     		glRotatef(rotate->neptune_rotation, 0, 0, 1);
-    		draw_model(&world.neptune.model);
+    		draw_model(&world.sun.model);
 
 
 

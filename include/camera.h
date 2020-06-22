@@ -6,7 +6,7 @@
 #include "load.h"
 
 
-#define MOVE_SPEED 10.0  //BIGGER IS FASTER
+#define MOVE_SPEED 5.0  //BIGGER IS FASTER
 #define CAMERA_SPEED 5.0 //BIGGER IS SLOWER
 
 
@@ -61,25 +61,25 @@ void rotate_camera(struct Camera* camera, double horizontal, double vertical);
 
 
 //Move the camera forward.
-void move_camera_forward(struct Camera* camera);
+void move_camera_forward(struct Camera* camera, double distance);
 
 //Move the camera backward.
-void move_camera_backward(struct Camera* camera);
+void move_camera_backward(struct Camera* camera, double distance);
 
 //rotate the camera left.
-void rotate_camera_left(struct Camera* camera);
+void rotate_camera_left(struct Camera* camera, double distance);
 
 
 //rotate the camera right.
-void rotate_camera_right(struct Camera* camera);
+void rotate_camera_right(struct Camera* camera, double distance);
 
 
 //rotate the camera up.
-void rotate_camera_up(struct Camera* camera);
+void rotate_camera_up(struct Camera* camera, double distance);
 
 
 //rotate the camera down.
-void rotate_camera_down(struct Camera* camera);
+void rotate_camera_down(struct Camera* camera, double distance);
 
 
 

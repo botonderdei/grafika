@@ -22,9 +22,9 @@ void init_camera(struct Camera* camera)
 	camera->position.y = 0;
 	camera->position.z = 3000;
 
-	camera->pose.x = 0;
+	camera->pose.x = -45;
 	camera->pose.y = 0;
-	camera->pose.z = 0;
+	camera->pose.z = 180;
 }
 
 
@@ -89,53 +89,65 @@ void rotate_camera(struct Camera* camera, double horizontal, double vertical)
 }
 
 
-void rotate_camera_up(struct Camera* camera)
+void rotate_camera_up(struct Camera* camera, double distance)
 {
-	rotate_camera(camera, 0, 5);
+	camera->prev_position = camera->position;
+	camera->position.z += distance;
 
 }
 
 
 
-void rotate_camera_down(struct Camera* camera)
+void rotate_camera_down(struct Camera* camera, double distance)
 {
-	rotate_camera(camera, 0, -5);
+	camera->prev_position = camera->position;
+	camera->position.z -= distance;
 }
 
 
 
-void move_camera_backward(struct Camera* camera)
+void move_camera_backward(struct Camera* camera, double distance)
 {
 	camera->prev_position = camera->position;
 	double angle = degree_to_radian(camera->pose.z);
 
-	camera->position.x -= cos(angle) * -2;
-	camera->position.y -= sin(angle) * -2;
+	camera->position.x -= cos(angle) * distance;
+	camera->position.y -= sin(angle) * distance;
 
 
 }
 
 
-void move_camera_forward(struct Camera* camera)
+void move_camera_forward(struct Camera* camera, double distance)
 {
 	camera->prev_position = camera->position;
 	double angle = degree_to_radian(camera->pose.z);
 
 
-	camera->position.x += cos(angle) * 2;
-	camera->position.y += sin(angle) * 2;
+	camera->position.x += cos(angle) * distance;
+	camera->position.y += sin(angle) * distance;
 
 }
 
 
-void rotate_camera_right(struct Camera* camera)
+void rotate_camera_right(struct Camera* camera, double distance)
 {
-	rotate_camera(camera, -5, 0);
+	camera->prev_position = camera->position;
+	double angle = degree_to_radian(camera->pose.z + 90.0);
+
+
+	camera->position.x -= cos(angle) * distance;
+	camera->position.y -= sin(angle) * distance;
 }
 
 
-void rotate_camera_left(struct Camera* camera)
+void rotate_camera_left(struct Camera* camera, double distance)
 {
-	rotate_camera(camera, 5, 0);
+	camera->prev_position = camera->position;
+	double angle = degree_to_radian(camera->pose.z - 90.0);
+
+	camera->position.x -= cos(angle) * distance;
+	camera->position.y -= sin(angle) * distance;
+
 }
 

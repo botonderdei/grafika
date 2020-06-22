@@ -14,7 +14,7 @@
 #define resolution 1   // 1: 1920*1080   0: 1366*768
 #define fullscreen 1   // 1: fullscreen  0: windowed
 
-GLfloat light_position[] = {1, 1, 0, 1};
+GLfloat light_position[] = {1, 1, 0, 0};
 GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 0 };
 GLfloat light_diffuse[] = { 0.5, 0.5, 0, 0 };
 GLfloat light_specular[] = { 1, 1, 1, 0 };
@@ -37,7 +37,7 @@ double distance_a = 4000;
 double distance_b = 4000;
 float speed = 30;
 int previous_time;
-
+int mouse_x, mouse_y;
 
 
 
@@ -64,29 +64,30 @@ void update_camera_position(struct Camera* camera, double elapsed_time)
 {
 	double distance;
 
-	distance = elapsed_time * MOVE_SPEED * speed;
+	distance = 0.05 * MOVE_SPEED * speed;
 
-	move_camera_forward(camera);
-
+	if (action.move_forward == TRUE) {
+	move_camera_forward(camera, distance);
+	}
 
 	if (action.move_backward == TRUE) {
-		move_camera_backward(camera);
+		move_camera_backward(camera, distance);
 	}
 
 	if (action.rotate_left == TRUE) {
-		rotate_camera_left(camera);
+		rotate_camera_left(camera, distance);
 	}
 
 	if (action.rotate_right == TRUE) {
-		rotate_camera_right(camera);
+		rotate_camera_right(camera, distance);
 	}
 
 	if (action.move_up == TRUE) {
-		rotate_camera_up(camera);
+		rotate_camera_up(camera, distance);
 	}
 
 	if (action.move_down == TRUE) {
-		rotate_camera_down(camera);
+		rotate_camera_down(camera, distance);
 	}
 
 	if (action.increase_light == TRUE) {
@@ -205,7 +206,7 @@ if (action.move_mars_in_galaxy == TRUE){
 		}
 	else
 		if (move->mars.x == 0){
-		move->mars.x = 100;
+		move->mars.x = 4000;
 		move->mars.y = 0;
 		move->mars.z = 0;
 		}
@@ -219,7 +220,7 @@ if (action.move_mercury_in_galaxy == TRUE){
 		}
 	else
 		if (move->mercury.x == 0){
-		move->mercury.x = 100;
+		move->mercury.x = 4000;
 		move->mercury.y = 0;
 		move->mercury.z = 0;
 		}
@@ -233,7 +234,7 @@ if (action.move_venus_in_galaxy == TRUE){
 		}
 	else
 		if (move->venus.x == 0){
-		move->venus.x = 100;
+		move->venus.x = 4000;
 		move->venus.y = 0;
 		move->venus.z = 0;
 		}
@@ -248,7 +249,7 @@ if (action.move_jupiter_in_galaxy == TRUE){
 		}
 	else
 		if (move->jupiter.x == 0){
-		move->jupiter.x = 100;
+		move->jupiter.x = 4000;
 		move->jupiter.y = 0;
 		move->jupiter.z = 0;
 		}
@@ -262,7 +263,7 @@ if (action.move_saturn_in_galaxy == TRUE){
 		}
 	else
 		if (move->saturn.x == 0){
-		move->saturn.x = 100;
+		move->saturn.x = 4000;
 		move->saturn.y = 0;
 		move->saturn.z = 0;
 		}
@@ -276,7 +277,7 @@ if (action.move_uranus_in_galaxy == TRUE){
 		}
 	else
 		if (move->uranus.x == 0){
-		move->uranus.x = 100;
+		move->uranus.x = 4000;
 		move->uranus.y = 0;
 		move->uranus.z = 0;
 		}
@@ -290,7 +291,7 @@ if (action.move_neptune_in_galaxy == TRUE){
 		}
 	else
 		if (move->neptune.x == 0){
-		move->neptune.x = 100;
+		move->neptune.x = 4;
 		move->neptune.y = 0;
 		move->neptune.z = 0;
 		}
@@ -334,20 +335,49 @@ void display() {
 }
 
 
+void mouse_handler(int button, int state, int x, int y)
+{
+	mouse_x = x;
+	mouse_y = y;
+}
+
+
+void motion_handler(int x, int y)
+{
+	double horizontal, vertical;
+
+	horizontal = mouse_x - x;
+	vertical = mouse_y - y;
+
+	rotate_camera(&camera, horizontal, vertical);
+
+	mouse_x = x;
+	mouse_y = y;
+
+	glutPostRedisplay();
+}
+
+
 void key_handler(unsigned char key, int x, int y)
 {
 	switch (key) {
 	case 'w':
-		action.move_up = TRUE;
+		action.move_forward = TRUE;
 		break;
 	case 's':
-		action.move_down = TRUE;
+		action.move_backward = TRUE;
 		break;
 	case 'a':
 		action.rotate_left = TRUE;
 		break;
 	case 'd':
 		action.rotate_right = TRUE;
+		break;
+	case 'x':
+		action.move_down = TRUE;
+		break;
+	case 32:
+		action.move_up = TRUE;
 		break;
 	case '+':
 		action.increase_light = TRUE;
@@ -367,16 +397,22 @@ void key_up_handler(unsigned char key, int x, int y)
 {
 	switch (key) {
 	case 'w':
-		action.move_up = FALSE;
+		action.move_forward = FALSE;
 		break;
 	case 's':
-		action.move_down = FALSE;
+		action.move_backward = FALSE;
 		break;
 	case 'a':
 		action.rotate_left = FALSE;
 		break;
 	case 'd':
 		action.rotate_right = FALSE;
+		break;
+	case 'x':
+		action.move_down = FALSE;
+		break;
+	case 32:
+		action.move_up = FALSE;
 		break;
 	case '+':
 		action.increase_light = FALSE;
@@ -403,6 +439,8 @@ void set_callbacks() {
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(key_handler);
 	glutKeyboardUpFunc(key_up_handler);
+	glutMouseFunc(mouse_handler);
+	glutMotionFunc(motion_handler);
 	glutIdleFunc(idle);
 	glutSpecialFunc(specialFunc);
 	if (fullscreen==1) glutFullScreen();
